@@ -11,10 +11,10 @@ export interface TableColumnWidthInfo {
 }
 /** @internal */
 export type SpecifyWidthsFn = PureComputed<
-  [TableColumn[], TableColumnWidthInfo[], (columnName: string) => void]
+  [TableColumn[], TableColumnWidthInfo[], number, (columnName: string) => void]
 >;
 /** @internal */
-export type TableColumnsWithWidthFn = PureComputed<[TableColumn[], TableColumnWidthInfo[]]>;
+export type TableColumnsWithWidthFn = PureComputed<[TableColumn[], TableColumnWidthInfo[], number]>;
 
 /** @internal */
 export type ColumnWidthPayload = { columnName: string, shift: number, minColumnWidth: number };

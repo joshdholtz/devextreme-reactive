@@ -51,12 +51,12 @@ class TableColumnResizingBase extends React.PureComponent<TableColumnResizingPro
     this.tableColumnsComputed = memoize(
       columnWidths => (
         { tableColumns }: Getters,
-      ) => tableColumnsWithWidths(tableColumns, columnWidths),
+      ) => tableColumnsWithWidths(tableColumns, columnWidths, 180),
     );
     this.tableColumnsDraftComputed = memoize(
       draftColumnWidths => (
         { tableColumns }: Getters,
-      ) => tableColumnsWithDraftWidths(tableColumns, draftColumnWidths),
+      ) => tableColumnsWithDraftWidths(tableColumns, draftColumnWidths, 180),
     );
 
     this.changeTableColumnWidth = stateHelper.applyReducer.bind(

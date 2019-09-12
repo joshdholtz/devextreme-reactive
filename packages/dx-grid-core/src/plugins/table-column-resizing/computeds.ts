@@ -6,14 +6,19 @@ const UNSET_COLUMN_WIDTH_ERROR = [
   'The TableColumnResizing plugin requires that all columns have the specified width.',
 ].join('\n');
 
-const specifyWidths: SpecifyWidthsFn = (tableColumns, widths, onAbsence) => {
+const specifyWidths: SpecifyWidthsFn = (tableColumns, widths, defaultColumnWidth, onAbsence) => {
   if (!widths.length) return tableColumns;
   return tableColumns
     .reduce((acc, tableColumn) => {
       if (tableColumn.type === TABLE_DATA_TYPE) {
         const columnName = tableColumn.column!.name;
         const column = widths.find(el => el.columnName === columnName);
-        const width = column && column.width;
+
+        let width = column && column.width;
+        if (width === undefined && defaultColumnWidth) {
+          width = defaultColumnWidth
+        }
+
         if (width === undefined) {
           onAbsence(columnName);
           acc.push(tableColumn);
@@ -28,11 +33,11 @@ const specifyWidths: SpecifyWidthsFn = (tableColumns, widths, onAbsence) => {
 };
 
 export const tableColumnsWithWidths: TableColumnsWithWidthFn = (
-  tableColumns, columnWidths,
-) => specifyWidths(tableColumns, columnWidths, (columnName) => {
+  tableColumns, columnWidths, defaultColumnWidth
+) => specifyWidths(tableColumns, columnWidths, defaultColumnWidth, (columnName) => {
   throw new Error(UNSET_COLUMN_WIDTH_ERROR.replace('$1', columnName));
 });
 
 export const tableColumnsWithDraftWidths: TableColumnsWithWidthFn = (
-  tableColumns, draftColumnWidths,
-) => specifyWidths(tableColumns, draftColumnWidths, () => {});
+  tableColumns, draftColumnWidths, defaultColumnWidth,
+) => specifyWidths(tableColumns, draftColumnWidths, defaultColumnWidth, () => {});
